@@ -6,6 +6,7 @@
 package pongesort;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -21,13 +22,15 @@ public class PongeSort {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-         try {
+        
+   
+        try {
        Socket server;
       
             server = new Socket("127.0.0.1", 5500);       
-         PrintWriter out
-                    = new PrintWriter(server.getOutputStream(), true);
-     
+
+    
+      ObjectOutputStream out = new ObjectOutputStream(server.getOutputStream());
          
         String all= "abcdefghilmnopqrstuvz";
         char[]array= new char[10];
@@ -37,15 +40,21 @@ public class PongeSort {
             array[i]=all.charAt((int)(Math.random()*20));
             System.out.print(array[i]);
         }
+       
         
-        
-        out.println(array[0]);
+        out.writeObject(array);
         out.flush();
+        
+        
+        Thread.sleep(100000);
+        
         
         
         
         
            } catch (IOException ex) {
+            Logger.getLogger(PongeSort.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
             Logger.getLogger(PongeSort.class.getName()).log(Level.SEVERE, null, ex);
         }
          
